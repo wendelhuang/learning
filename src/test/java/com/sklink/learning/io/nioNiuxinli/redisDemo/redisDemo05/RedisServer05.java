@@ -1,11 +1,13 @@
 package com.sklink.learning.io.nioNiuxinli.redisDemo.redisDemo05;
 
-import com.sklink.learning.io.nioNiuxinli.redisDemo.Utils;
-
 import java.io.IOException;
-import java.net.ServerSocket;
+import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.HashSet;
+import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -16,52 +18,56 @@ import java.util.concurrent.TimeUnit;
 
 public class RedisServer05 {
     public static Map<String, String> cache = new ConcurrentHashMap<>();
-    final public static Set<Socket> socketSet = new HashSet<>(10);
 
     public static void main(String[] args) throws IOException {
         final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(200, 1000, 30, TimeUnit.SECONDS, new ArrayBlockingQueue<>(1000));
-        ServerSocket serverSocket = new ServerSocket(8888, 1000);
+        ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+        serverSocketChannel.socket().bind(new InetSocketAddress(8888), 1000);
+        Selector selector = Selector.open();
+        serverSocketChannel.configureBlocking(false);
+        serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
-        Thread thread = new Thread(() -> {
-            while(true) {
-                synchronized (socketSet) {
-                    Iterator<Socket> it = socketSet.iterator();
-                    while(it.hasNext()) {
-                        Socket socket = it.next();
-                        if (socket.isConnected()) {
-                            try {
-                                if (!socket.isInputShutdown() && socket.getInputStream().available() > 0) {
-                                    it.remove();
-                                    threadPool.execute(new RequestHandler(socket));
-                                }
-                            } catch (IOException e) {
-                                socketSet.remove(socket);
-                                try {
-                                    socket.close();
-                                } catch (IOException e1) {
-                                    e1.printStackTrace();
-                                }
-                                e.printStackTrace();
-                            }
-                        }else{
-                            socketSet.remove(socket);
-                            try {
-                                socket.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
+        while (true) {
+            int num = selector.select();
+            if (num == 0) {
+                continue;
+            }
+
+            Set<SelectionKey> selectionKeys = selector.selectedKeys();
+            Iterator<SelectionKey> it = selectionKeys.iterator();
+
+            while(it.hasNext()) {
+                SelectionKey key = it.next();
+                it.remove();
+                if (key.isAcceptable()) {
+                    SocketChannel socketChannel = serverSocketChannel.accept();
+                    socketChannel.configureBlocking(false);
+                    socketChannel.register(key.selector(), SelectionKey.OP_READ, ByteBuffer.allocate(512));
+                    System.out.println("new connection");
+                }
+                if (key.isReadable()) {
+                    SocketChannel clientSocketChannel = (SocketChannel) key.channel();
+                    if (!clientSocketChannel.isConnected()) {
+                        clientSocketChannel.finishConnect();
+                        key.cancel();
+                        clientSocketChannel.close();
+                        System.out.println("socket closed");
+                        continue;
+                    }
+                    ByteBuffer buffer = (ByteBuffer) key.attachment();
+                    int len = clientSocketChannel.read(buffer);
+                    Socket socket = clientSocketChannel.socket();
+                    if (len == -1) {
+                        clientSocketChannel.finishConnect();
+                        key.cancel();
+                        clientSocketChannel.close();
+                        System.out.println("socket closed");
+                    }else{
+                        threadPool.execute(new RequestHandler(clientSocketChannel, buffer));
                     }
                 }
             }
-        });
-        thread.start();
 
-
-        while (true) {
-            Socket clientSocket = serverSocket.accept();
-            Utils.logDebug(clientSocket.getRemoteSocketAddress().toString());
-            threadPool.execute(new RequestHandler(clientSocket));
         }
     }
 }
