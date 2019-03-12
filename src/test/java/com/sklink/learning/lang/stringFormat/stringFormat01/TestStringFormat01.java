@@ -1,4 +1,4 @@
-package com.sklink.learning.lang.stringFormat01;
+package com.sklink.learning.lang.stringFormat.stringFormat01;
 
 import org.junit.Test;
 
