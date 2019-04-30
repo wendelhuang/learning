@@ -1,0 +1,38 @@
+<html>
+<head></head>
+<body>
+<div id="app">
+	{{message}}
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+	var app = new Vue({
+		el: '#app',
+		data: {
+			message: 'Hello Vue',
+			vals: {
+				val1: new Date(),
+				val2: new Date()
+			}
+		},
+		computed: {
+			vals.val3: {
+				get: function() {
+					return this.message + this.message;
+				}
+			}
+		},
+		mounted: function() {
+			this.load();
+		},
+		methods: {
+			load: function() {
+				console.log('load');
+				this.vals = {val1: 'val1'};
+				console.log(this.vals);
+			}
+		}
+	})
+</script>
+</html>
