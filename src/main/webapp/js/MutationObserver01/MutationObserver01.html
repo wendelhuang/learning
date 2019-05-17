@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .test {
+        background-color: red;
+    }
+</style>
+<body>
+    <div id="sample-div" class="test">Sample div</div>
+    <button onclick="removeClass()">点击</button>
+</body>
+
+<script src="../../lib/jquery-3.4.1/jquery-3.4.1.js"></script>
+<script>
+    function removeClass() {
+        console.log("removeClass");
+        $('#sample-div').removeAttr("class");
+    }
+    var mutationObserver = new MutationObserver(function(mutations) {
+       mutations.forEach(function(mutation) {
+           console.log(mutation);
+       });
+    });
+    mutationObserver.observe(document.documentElement, {
+       attributes: true,
+       characterData: true,
+       childList: true,
+       subtree: true,
+       attributeOldValue: true,
+       characterDataOldValue: true
+    });
+</script>
+
+</html>

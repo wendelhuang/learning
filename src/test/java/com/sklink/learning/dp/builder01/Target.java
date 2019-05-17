@@ -16,13 +16,17 @@ public class Target {
 
     private BigDecimal recordAmount;
 
-    private BigDecimal stock;
-
-    private BigDecimal rightIssuePrice;
+    private BigDecimal stockNum;
 
     private BigDecimal ratio;
 
-    private BigDecimal payCash;
+    private BigDecimal rightIssuePrice;
+
+    private BigDecimal needMoney;
+
+    private BigDecimal payStockNum;
+
+    private BigDecimal payMoney;
 
     private String extDate;
 

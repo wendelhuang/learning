@@ -1,6 +1,6 @@
 package com.sklink.learning.oo.oo01;
 
-public class TestOO02 {
+public class TestOO01_02 {
     public static void main(String[] args) {
         MyClass02 myClass02 = new MyClass02();
         myClass02.laugh();
