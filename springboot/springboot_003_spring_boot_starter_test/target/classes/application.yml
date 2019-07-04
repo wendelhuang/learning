@@ -1,0 +1,5 @@
+ssb:
+  example:
+    enabled: true
+    host: 11.11.11.11
+    port: 9999

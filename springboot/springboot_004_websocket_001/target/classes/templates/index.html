@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+ 
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link type="text/css" rel="stylesheet" th:href="@{/css/index.css}" />
+    <script type="text/javascript" th:src="@{/js/index.js}"></script>
+</head>
+	<body>
+		<p th:text="'Hello, ' + '!'" ></p>
+	</body>
+
+	<script>
+		var cid = [[${cid}]];
+		console.log(cid);
+		var ws;
+		if (typeof(WebSocket) == "undefined") {
+			console.log("当前浏览器不支持WebSocket");
+		}else{
+			console.log("当前浏览器支持WebSocket");
+			
+			ws = new WebSocket("ws://localhost:8080/websocket/" + cid);
+			
+			ws.onopen = function() {
+				console.log("WebSocket已打开");
+			};
+			
+			ws.onmessage = function(msg) {
+				console.log(msg);
+			};
+			
+			ws.onclose = function() {
+				console.log("WebSocket已关闭");
+			};
+			
+			ws.onerror = function() {
+				alert("WebSocket发生了错误");
+			}
+		}
+	</script>
+</html>
