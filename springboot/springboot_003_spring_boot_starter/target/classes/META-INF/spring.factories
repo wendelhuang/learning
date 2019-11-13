@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.sosimplebox.springboot_003_spring_boot_starter.MyAutoConfigure

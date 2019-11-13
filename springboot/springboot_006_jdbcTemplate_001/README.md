@@ -1,0 +1,1 @@
+经测试, springboot 2.1.5.RELEASE使用内建的jdbcTemplate会报错

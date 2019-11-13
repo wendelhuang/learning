@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    #driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/temp_env?useUnicode=true&characterEncoding=utf-8&autoReconnect=true
+    username: root
+    password: root
+logging:
+  level:
+    org.springframework.jdbc: DEBUG
+    java.sql: DEBUG
