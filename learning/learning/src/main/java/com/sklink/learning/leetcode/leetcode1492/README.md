@@ -1,0 +1,1 @@
+https://leetcode-cn.com/problems/the-kth-factor-of-n/
