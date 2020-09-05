@@ -1,7 +1,5 @@
 package com.sklink.learning.leetcode.leetcode60;
 
-import java.util.Arrays;
-
 class Solution {
 	public String getPermutation(int n, int k) {
 		int N = n + 1;
@@ -13,7 +11,8 @@ class Solution {
 		}
 		StringBuffer res = new StringBuffer();
 		for (int i = n; i > 0; i--) {
-			System.out.println("p, i = " + Arrays.toString(new int[] { p, i }));
+			// System.out.println("p, i = " + Arrays.toString(new int[] { p, i
+			// }));
 			p = p / i;
 			int seg = K / p + 1;
 			int cnt = 0;
