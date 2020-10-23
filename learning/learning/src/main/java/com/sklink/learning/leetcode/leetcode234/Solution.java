@@ -9,7 +9,7 @@ public class Solution {
 			printList(re);
 			return is(re, mid);
 		}
-		return false;
+		return true;
     }
 	
 	public boolean is(ListNode head, ListNode mid) {
