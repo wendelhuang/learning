@@ -1,0 +1,368 @@
+package com.sklink.learning.leetcode.leetcode1627;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Solution {
+	public int[] set = new int[10000+5];
+	
+	public List<Boolean> areConnected(int n, int threshold, int[][] queries) {
+		for(int i = 1; i <= n; i++) {
+			set[i] = i;
+		}
+		for(int i = threshold+1; i <= n; i++) {
+			int times = 2;
+			while(i * times <= n) {
+				union(i, i*times);
+				times++;
+			}
+		}
+		List<Boolean> res = new ArrayList<Boolean>();
+		for(int i = 0; i < queries.length; i++) {
+			int p = queries[i][0];
+			int q = queries[i][1];
+			res.add(oneSet(p, q));
+		}
+		return res;
+    }
+	
+	public int gcd(int m, int n) {
+		if (m < n) {
+			return gcd(n, m);
+		}
+		return n == 0 ? m : gcd(n, m%n);
+	}
+	
+	public int parent(int n) {
+		if (set[n] == n) {
+			return n;
+		}
+		set[n] = parent(set[n]);
+		return set[n];
+	}
+	
+	public boolean oneSet(int m, int n) {
+		return parent(m) == parent(n);
+	}
+	
+	public void union(int m, int n) {
+		int p1 = parent(m);
+		int p2 = parent(n);
+		if (p1 != p2) {
+			set[p1] = set[p2];
+		}
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		Solution solution = new Solution();
+		int n = 26;
+		int threshold = 3;
+		int[][] queries = new int[][] {
+			new int[] {8,3},
+			new int[] {14,9},
+			new int[] {22,23},
+			new int[] {22,25},
+			new int[] {12,6},
+			new int[] {17,3},
+			new int[] {25,17},
+			new int[] {26,14},
+			new int[] {4,12},
+			new int[] {16,12},
+			new int[] {16,9},
+			new int[] {26,3},
+			new int[] {20,22},
+			new int[] {17,18},
+			new int[] {3,16},
+			new int[] {20,17},
+			new int[] {24,9},
+			new int[] {12,26},
+			new int[] {1,4},
+			new int[] {23,24},
+			new int[] {12,8},
+			new int[] {6,22},
+			new int[] {18,20},
+			new int[] {22,13},
+			new int[] {11,3},
+			new int[] {8,18},
+			new int[] {18,15},
+			new int[] {16,11},
+			new int[] {4,15},
+			new int[] {25,3},
+			new int[] {1,12},
+			new int[] {2,15},
+			new int[] {2,1},
+			new int[] {5,2},
+			new int[] {15,25},
+			new int[] {18,10},
+			new int[] {16,1},
+			new int[] {16,6},
+			new int[] {7,22},
+			new int[] {26,13},
+			new int[] {24,6},
+			new int[] {23,4},
+			new int[] {9,25},
+			new int[] {24,26},
+			new int[] {7,17},
+			new int[] {6,25},
+			new int[] {2,9},
+			new int[] {13,9},
+			new int[] {1,20},
+			new int[] {5,26},
+			new int[] {15,14},
+			new int[] {5,16},
+			new int[] {7,9},
+			new int[] {15,19},
+			new int[] {16,2},
+			new int[] {1,13},
+			new int[] {3,7},
+			new int[] {9,26},
+			new int[] {3,13},
+			new int[] {8,23},
+			new int[] {7,1},
+			new int[] {10,19},
+			new int[] {23,9},
+			new int[] {16,13},
+			new int[] {18,25},
+			new int[] {14,2},
+			new int[] {16,17},
+			new int[] {21,7},
+			new int[] {19,4},
+			new int[] {6,9},
+			new int[] {25,12},
+			new int[] {9,5},
+			new int[] {1,18},
+			new int[] {26,7},
+			new int[] {12,21},
+			new int[] {12,20},
+			new int[] {24,3},
+			new int[] {24,19},
+			new int[] {5,14},
+			new int[] {12,3},
+			new int[] {20,2},
+			new int[] {7,23},
+			new int[] {24,21},
+			new int[] {4,5},
+			new int[] {8,20},
+			new int[] {19,22},
+			new int[] {21,5},
+			new int[] {26,6},
+			new int[] {16,19},
+			new int[] {23,25},
+			new int[] {18,26},
+			new int[] {10,25},
+			new int[] {3,5},
+			new int[] {14,19},
+			new int[] {21,22},
+			new int[] {22,1},
+			new int[] {4,25},
+			new int[] {15,11},
+			new int[] {15,24},
+			new int[] {10,15},
+			new int[] {23,17},
+			new int[] {25,11},
+			new int[] {23,21},
+			new int[] {8,2},
+			new int[] {5,22},
+			new int[] {19,23},
+			new int[] {3,20},
+			new int[] {21,2},
+			new int[] {5,25},
+			new int[] {4,7},
+			new int[] {8,21},
+			new int[] {1,6},
+			new int[] {18,6},
+			new int[] {17,13},
+			new int[] {26,8},
+			new int[] {23,6},
+			new int[] {6,11},
+			new int[] {6,10},
+			new int[] {7,8},
+			new int[] {18,5},
+			new int[] {20,15},
+			new int[] {11,14},
+			new int[] {24,1},
+			new int[] {16,24},
+			new int[] {2,22},
+			new int[] {3,22},
+			new int[] {25,21},
+			new int[] {7,2},
+			new int[] {1,11},
+			new int[] {19,12},
+			new int[] {19,1},
+			new int[] {22,8},
+			new int[] {10,3},
+			new int[] {16,10},
+			new int[] {6,15},
+			new int[] {26,4},
+			new int[] {9,8},
+			new int[] {5,20},
+			new int[] {4,13},
+			new int[] {23,3},
+			new int[] {18,21},
+			new int[] {10,23},
+			new int[] {14,16},
+			new int[] {24,25},
+			new int[] {13,11},
+			new int[] {4,2},
+			new int[] {26,2},
+			new int[] {3,1},
+			new int[] {18,14},
+			new int[] {14,6},
+			new int[] {6,2},
+			new int[] {14,4},
+			new int[] {24,11},
+			new int[] {1,5},
+			new int[] {4,21},
+			new int[] {22,17},
+			new int[] {17,14},
+			new int[] {10,11},
+			new int[] {11,26},
+			new int[] {6,4},
+			new int[] {19,26},
+			new int[] {16,20},
+			new int[] {18,4},
+			new int[] {8,6},
+			new int[] {26,25},
+			new int[] {10,17},
+			new int[] {20,13},
+			new int[] {9,20},
+			new int[] {16,18},
+			new int[] {8,5},
+			new int[] {5,6},
+			new int[] {21,26},
+			new int[] {17,21},
+			new int[] {26,16},
+			new int[] {5,7},
+			new int[] {14,7},
+			new int[] {3,9},
+			new int[] {23,18},
+			new int[] {9,10},
+			new int[] {17,26},
+			new int[] {15,16},
+			new int[] {13,21},
+			new int[] {1,21},
+			new int[] {17,8},
+			new int[] {21,9},
+			new int[] {10,8},
+			new int[] {24,4},
+			new int[] {19,20},
+			new int[] {20,7},
+			new int[] {1,8},
+			new int[] {1,9},
+			new int[] {24,20},
+			new int[] {18,7},
+			new int[] {4,9},
+			new int[] {2,17},
+			new int[] {22,18},
+			new int[] {25,19},
+			new int[] {7,6},
+			new int[] {23,5},
+			new int[] {14,1},
+			new int[] {13,24},
+			new int[] {5,13},
+			new int[] {14,21},
+			new int[] {23,26},
+			new int[] {6,13},
+			new int[] {10,5},
+			new int[] {17,1},
+			new int[] {24,22},
+			new int[] {3,15},
+			new int[] {11,5},
+			new int[] {22,14},
+			new int[] {17,24},
+			new int[] {7,25},
+			new int[] {24,7},
+			new int[] {18,11},
+			new int[] {26,1},
+			new int[] {11,7},
+			new int[] {25,20},
+			new int[] {24,8},
+			new int[] {19,17},
+			new int[] {12,23},
+			new int[] {17,12},
+			new int[] {12,13},
+			new int[] {23,13},
+			new int[] {14,24},
+			new int[] {16,22},
+			new int[] {25,13},
+			new int[] {18,24},
+			new int[] {20,23},
+			new int[] {25,16},
+			new int[] {24,5},
+			new int[] {10,14},
+			new int[] {12,14},
+			new int[] {3,14},
+			new int[] {11,9},
+			new int[] {8,13},
+			new int[] {21,16},
+			new int[] {12,9},
+			new int[] {26,15},
+			new int[] {4,11},
+			new int[] {5,17},
+			new int[] {23,14},
+			new int[] {20,10},
+			new int[] {11,23},
+			new int[] {2,11},
+			new int[] {10,7},
+			new int[] {4,8},
+			new int[] {24,10},
+			new int[] {25,8},
+			new int[] {8,16},
+			new int[] {7,13},
+			new int[] {3,18},
+			new int[] {2,23},
+			new int[] {10,26},
+			new int[] {19,11},
+			new int[] {12,24},
+			new int[] {2,3},
+			new int[] {15,9},
+			new int[] {11,17},
+			new int[] {11,8},
+			new int[] {21,19},
+			new int[] {14,8},
+			new int[] {11,20},
+			new int[] {21,10},
+			new int[] {12,7},
+			new int[] {12,5},
+			new int[] {21,15},
+			new int[] {11,12},
+			new int[] {2,10},
+			new int[] {3,6},
+			new int[] {17,15},
+			new int[] {2,24},
+			new int[] {16,23},
+			new int[] {13,15},
+			new int[] {19,18},
+			new int[] {13,10},
+			new int[] {4,3},
+			new int[] {21,20},
+			new int[] {22,9},
+			new int[] {10,12},
+			new int[] {18,2},
+			new int[] {2,12},
+			new int[] {6,21},
+			new int[] {13,19},
+			new int[] {15,1},
+			new int[] {15,5},
+			new int[] {3,19},
+			new int[] {22,10},
+			new int[] {17,4},
+			new int[] {1,10},
+			new int[] {7,15},
+			new int[] {6,20},
+			new int[] {14,20},
+			new int[] {11,21},
+			new int[] {18,13},
+			new int[] {19,5},
+			new int[] {20,26}
+		};
+		List<Boolean> res = solution.areConnected(n, threshold, queries);
+		
+		for(int i = 0; i < res.size(); i++) {
+			System.out.println(String.format("%d, %d-%d, %s", (i+1), queries[i][0], queries[i][1], res.get(i)));
+		}
+	}
+}
