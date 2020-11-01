@@ -1,0 +1,1 @@
+https://leetcode-cn.com/problems/check-array-formation-through-concatenation/
